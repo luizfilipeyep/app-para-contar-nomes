@@ -60,7 +60,7 @@ export default function App() {
         style={styles.btn}
         onPress={novoNome}
       >
-        <Text style={styles.titulo}Novo nome></Text>
+        <Text style={styles.resultado}>Novo nome</Text>
       </TouchableOpacity>
 
       <StatusBar style="auto" />
