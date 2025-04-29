@@ -1,15 +1,35 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
-import { useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, AsyncStorage } from 'react-native'
+import { useState, useEffect, useMemo } from 'react'
 
 export default function App() {
   const [nome, setNome] = useState("Luiz")
   const [input, setInput] = useState("")
 
+  useEffect(() => {
+    async function getStorage() {
+      const nomeStorage = await AsyncStorage.getItem("nomes")
+      if(nomeStorage !== null){
+        setNome(nomeStorage)
+      }
+    }
+    getStorage()
+  }, [])
+
+  useEffect (() => {
+    async function AsyncStorage() {
+      await AsyncStorage.setItem("nomes", nome)
+    }
+    AsyncStorage()
+  }, [nome])
+
   const alterarNome = () => {
     setNome(input)
     setInput("")
   }
+
+  const letrasNome = useMemo(() => nome.length, [nome])
+  console.log(letrasNome)
 
   return (
     <View style={styles.container}>
@@ -28,6 +48,8 @@ export default function App() {
       </TouchableOpacity>
 
       <Text style={styles.titulo}>{nome}</Text>
+      <Text style={styles.resultado}>tem {letrasNome} letras.</Text>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -56,5 +78,9 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#ffffff",
     height: 50
+  },
+  resultado: {
+    color: "white",
+    fontSize: 22
   }
 });
