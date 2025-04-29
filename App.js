@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, AsyncStorage } from 'react-native'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 
 export default function App() {
   const [nome, setNome] = useState("Luiz")
   const [input, setInput] = useState("")
+  const nomeInput = useRef()
 
   useEffect(() => {
     async function getStorage() {
@@ -28,6 +29,10 @@ export default function App() {
     setInput("")
   }
 
+  const novoNome = () => {
+    nomeInput.current.focus()
+  }
+
   const letrasNome = useMemo(() => nome.length, [nome])
   console.log(letrasNome)
 
@@ -38,6 +43,7 @@ export default function App() {
         placeholder="Digite o novo nome"
         value={input}
         onChangeText={(texto) => setInput(texto)}
+        ref={nomeInput}
       ></TextInput>
 
       <TouchableOpacity 
@@ -49,6 +55,13 @@ export default function App() {
 
       <Text style={styles.titulo}>{nome}</Text>
       <Text style={styles.resultado}>tem {letrasNome} letras.</Text>
+
+      <TouchableOpacity 
+        style={styles.btn}
+        onPress={novoNome}
+      >
+        <Text style={styles.titulo}Novo nome></Text>
+      </TouchableOpacity>
 
       <StatusBar style="auto" />
     </View>
